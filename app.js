@@ -1,6 +1,10 @@
 // include modules and define related variables
 const express = require('express')
 const app = express()
+const exphbs = require('express-handlebars')
+
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
 
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -17,7 +21,7 @@ db.once('open', () => {
 
 // set routes
 app.get('/', (req, res) => {
-  res.send('Hello')
+  res.render('index')
 })
 
 
