@@ -40,17 +40,26 @@ app.get('/todos/new', (req, res) => {
 
 app.post('/todos', (req, res) => {
   const name = req.body.name
-  console.log(req)
   // 先產生實例，再存入資料庫
   // const todo = new Todo({ name })
   // return todo.save()
   //   .then(() => res.redirect('/'))
   //   .catch(err => console.log(err))
 
+  // 直接新增資料到資料庫
   return Todo.create({ name })
     .then(res.redirect('/'))
     .catch(err => console.log(err))
 
+})
+
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+
+  return Todo.findById(id)
+    .lean()
+    .then(todo => res.render('detail', { todo }))
+    .catch(err => console.log(err))
 })
 
 // start and listen the server
