@@ -12,6 +12,7 @@ mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUn
 
 const db = mongoose.connection
 
+// modules setting
 db.on('error', () => {
   console.log('mongodb error!')
 })
@@ -25,7 +26,9 @@ app.set('view engine', 'hbs')
 
 app.use(express.urlencoded({ extended: true }))
 
-// set routes
+// --- set routes ---
+
+// render index page
 app.get('/', (req, res) => {
   Todo.find()
     .lean()
@@ -34,10 +37,12 @@ app.get('/', (req, res) => {
 
 })
 
+// render creating page
 app.get('/todos/new', (req, res) => {
   return res.render('new')
 })
 
+// create a new todo to database
 app.post('/todos', (req, res) => {
   const name = req.body.name
   // 先產生實例，再存入資料庫
@@ -53,6 +58,7 @@ app.post('/todos', (req, res) => {
 
 })
 
+// render detail page
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id
 
@@ -61,6 +67,30 @@ app.get('/todos/:id', (req, res) => {
     .then(todo => res.render('detail', { todo }))
     .catch(err => console.log(err))
 })
+
+// render edit page
+app.get('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then(todo => res.render('edit', { todo }))
+    .catch(err => console.log(err))
+})
+
+// update a todo data already in database 
+app.post('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  return Todo.findById(id)
+    .then(todo => {
+      todo.name = name
+      return todo.save()
+    })
+    .then(() => res.redirect(`/todos/${id}`))
+    .catch(err => console.log(err))
+})
+
+
 
 // start and listen the server
 
