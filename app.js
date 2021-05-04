@@ -37,12 +37,12 @@ app.get('/', (req, res) => {
 
 })
 
-// render creating page
+// render create page
 app.get('/todos/new', (req, res) => {
   return res.render('new')
 })
 
-// create a new todo to database
+// CREATE: create a new todo to database
 app.post('/todos', (req, res) => {
   const name = req.body.name
   // 先產生實例，再存入資料庫
@@ -58,10 +58,9 @@ app.post('/todos', (req, res) => {
 
 })
 
-// render detail page
+// READ: find a todo and render detail page
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id
-
   return Todo.findById(id)
     .lean()
     .then(todo => res.render('detail', { todo }))
@@ -77,7 +76,7 @@ app.get('/todos/:id/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
-// update a todo data already in database 
+// UPDATE: find a todo, edit, and save it 
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
   const name = req.body.name
@@ -90,6 +89,14 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// DELETE: find a todo and delete it
+app.post('/todos/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .then(todo => todo.remove())
+    .then(() => res.redirect(`/`))
+    .catch(err => console.log(err))
+})
 
 
 // start and listen the server
