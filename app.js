@@ -1,12 +1,9 @@
 // include modules and define related variables
 const express = require('express')
 const mongoose = require('mongoose')
-
 const exphbs = require('express-handlebars')
-
 const Todo = require('./models/todo.js')
-
-const app = express()
+const methodOverride = require('method-override')
 
 mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -21,10 +18,12 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+const app = express()
+
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
-
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // --- set routes ---
 
@@ -78,7 +77,7 @@ app.get('/todos/:id/edit', (req, res) => {
 })
 
 // UPDATE: find a todo, edit, and save it 
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
   return Todo.findById(id)
@@ -92,7 +91,7 @@ app.post('/todos/:id/edit', (req, res) => {
 })
 
 // DELETE: find a todo and delete it
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     .then(todo => todo.remove())
