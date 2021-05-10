@@ -1,23 +1,10 @@
 // include modules and define related variables
 const express = require('express')
-const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
-const Todo = require('./models/todo.js')
+const Todo = require('./models/todo')
 const methodOverride = require('method-override')
 const routes = require('./routes')
-
-mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
-
-const db = mongoose.connection
-
-// modules setting
-db.on('error', () => {
-  console.log('mongodb error!')
-})
-
-db.once('open', () => {
-  console.log('mongodb connected!')
-})
+require('./configuration/mongoose')
 
 const app = express()
 
