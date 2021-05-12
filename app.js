@@ -1,10 +1,9 @@
 // include modules and define related variables
 const express = require('express')
 const exphbs = require('express-handlebars')
-const Todo = require('./models/todo')
 const methodOverride = require('method-override')
 const routes = require('./routes')
-require('./configuration/mongoose')
+require('./config/mongoose')
 
 const app = express()
 
@@ -15,7 +14,6 @@ app.use(methodOverride('_method'))
 
 // --- set routes ---
 app.use(routes)
-
 
 // start and listen the server
 
