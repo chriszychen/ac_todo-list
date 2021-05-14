@@ -5,7 +5,7 @@
         <input type="checkbox" name="isDone" {{#if todo.isDone}} checked {{/if}} disabled>
       </div>
     </div>
-    <input class="form-control" type="text" name="name" placeholder="name" value="{{ todo.name }}">
+    <input class="form-control" type="text" name="name" placeholder="name" value="{{ todo.name }}" disabled>
     <div class="input-group-append">
       <a class="btn btn-success" href="/todos/{{ todo._id }}/edit">edit</a>
       <button class="btn btn-danger" type="submit">delete</button>
