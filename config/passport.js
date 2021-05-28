@@ -8,6 +8,7 @@ module.exports = app => {
   app.use(passport.session())
   // set up local strategy
   passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+    console.log('start query user')
     User.findOne({ email })
       .then(user => {
         if (!user) {
@@ -16,6 +17,7 @@ module.exports = app => {
         if (user.password !== password) {
           return done(null, false, { message: 'Email or Password incorrect.' })
         }
+        console.log('find user')
         return done(null, user)
       })
       .catch(err => done(err, false))
