@@ -8,7 +8,7 @@ router.get('/login', (req, res) => {
   res.render('login')
 })
 
-// handle the login data
+// handle the login
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/users/login'
@@ -34,6 +34,12 @@ router.post('/register', (req, res) => {
       }
     })
     .catch(err => console.log(err))
+})
+
+// handle the logout
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
 })
 
 module.exports = router
