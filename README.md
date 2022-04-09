@@ -2,6 +2,11 @@
 
 使用 MongoDB 作為資料庫打造的簡易 To-Do List App
 
+## Prerequisites
+
+* Node.js v14.16.1
+* MongoDB v4.2.13
+
 ## Installation and Execution
 
 1.打開 terminal，使用 git clone 將專案下載至本地資料夾
